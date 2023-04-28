@@ -44,7 +44,7 @@ breadclicked = False
 
 
 csv_list_storage = []
-op = open('inventory.csv','r')
+op = open('assets/csv-files/inventory.csv','r')
 dt = csv.reader(op)
 for row in dt:
     print(row)
@@ -75,19 +75,19 @@ my_canvas = Canvas(root,width=w,height=h,bg='white')
 my_canvas.pack()
 
 
-breadimg = Image.open('./images/bread.png')
+breadimg = Image.open('assets/items/bread.png')
 breadimg = breadimg.resize((47,47))
 img = ImageTk.PhotoImage(breadimg)
 
 
-breadcopy = Image.open('./images/bread copy.png')
+breadcopy = Image.open('assets/items/bread.png')
 breadcopy = breadcopy.resize((47,47))
 breadcopyobj = ImageTk.PhotoImage(breadcopy)
 apple = PhotoImage(file='./images/apple.png')
 cat = PhotoImage(file='./cat.png')
 
 
-inventory = Image.open('./images/inventory-snip.png')
+inventory = Image.open('assets/misc/inventory-snip.png')
 inventory = inventory.resize((528,498))
 inventoryobj = ImageTk.PhotoImage(inventory)
 
@@ -95,7 +95,7 @@ inventoryinst = my_canvas.create_image(960,450, image=inventoryobj)
 my_image = my_canvas.create_image(400,250, anchor='nw', image=img)
 
 inventory_storage = []
-op = open('inventory.csv','r')
+op = open('assets/csv-files/inventory.csv','r')
 dt = csv.reader(op)
 for row in dt:
     inventory_storage.append(row)

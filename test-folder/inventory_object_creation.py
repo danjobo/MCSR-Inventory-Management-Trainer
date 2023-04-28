@@ -1,4 +1,4 @@
-speedrunItemsFileDirectory = './test-folder/speedrun_items.txt'
+speedrunItemsFileDirectory = 'assets/text-files/speedrun_items.txt'
 
 
 

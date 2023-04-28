@@ -28,7 +28,8 @@ import csv
 # op.close()
 
 csv_list_storage = []
-op = open('test-inv.csv','r')
+op = open('assets/csv-files/test-inv.csv','r')
+
 dt = csv.reader(op)
 for row in dt:
     print(row)
@@ -40,7 +41,7 @@ csv_list_storage[0][8] = 'white_bed'
 op.close()
 
 
-op = open('test-inv.csv','w', newline='')
+op = open('assets/csv-files/test-inv.csv','w', newline='')
 dt = csv.writer(op)
 dt.writerows(csv_list_storage)
 op.close()
