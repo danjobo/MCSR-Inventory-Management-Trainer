@@ -25,6 +25,8 @@ invX, invY = 287, 27
 
 
 
+
+
 running = True
 while running:
     mouseX, mouseY = pg.mouse.get_pos()
@@ -39,6 +41,12 @@ while running:
         if event.type == MOUSEBUTTONDOWN:
             pos=pg.mouse.get_pos()
             btn=pg.mouse
+            clicked = True
+            print("x = {}, y = {}".format(pos[0], pos[1]))
+        if event.type == MOUSEBUTTONUP:
+            pos=pg.mouse.get_pos()
+            btn=pg.mouse
+            clicked = False
             print("x = {}, y = {}".format(pos[0], pos[1]))
         # Mouse movement
         if event.type == MOUSEMOTION:
