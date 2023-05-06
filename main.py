@@ -17,7 +17,7 @@ from PIL import ImageTk, Image
 
 root = Tk()
 root.title('Grid Snap Draggables')
-root.iconbitmap('./images/end_crystal_icon_Tde_icon.ico')
+root.iconbitmap('./assets/misc/end_crystal_icon_Tde_icon.ico')
 root.geometry('1920x1080+0+0')
 
 w = 1920
@@ -75,19 +75,18 @@ my_canvas = Canvas(root,width=w,height=h,bg='white')
 my_canvas.pack()
 
 
-breadimg = Image.open('assets/items/bread.png')
+breadimg = Image.open('./assets/misc/bread.png')
 breadimg = breadimg.resize((47,47))
 img = ImageTk.PhotoImage(breadimg)
 
 
-breadcopy = Image.open('assets/items/bread.png')
+breadcopy = Image.open('./assets/misc/bread.png')
 breadcopy = breadcopy.resize((47,47))
 breadcopyobj = ImageTk.PhotoImage(breadcopy)
-apple = PhotoImage(file='./images/apple.png')
-cat = PhotoImage(file='./cat.png')
+apple = PhotoImage(file='./assets/misc/apple.png')
 
 
-inventory = Image.open('assets/misc/inventory-snip.png')
+inventory = Image.open('./assets/misc/inventory-snip.png')
 inventory = inventory.resize((528,498))
 inventoryobj = ImageTk.PhotoImage(inventory)
 
@@ -95,7 +94,7 @@ inventoryinst = my_canvas.create_image(960,450, image=inventoryobj)
 my_image = my_canvas.create_image(400,250, anchor='nw', image=img)
 
 inventory_storage = []
-op = open('assets/csv-files/inventory.csv','r')
+op = open('./assets/csv-files/inventory.csv','r')
 dt = csv.reader(op)
 for row in dt:
     inventory_storage.append(row)
@@ -2053,13 +2052,6 @@ def a_press(event):
     global appleimg
     appleimg = my_canvas.create_image(mousex,mousey, image=apple)
 
-def c_press(event):
-    global mousex
-    global mousey
-    global apple
-    global catimg
-    catimg = my_canvas.create_image(mousex,mousey, image=cat)
-
 def x_press(event):
     global inventory
     global inventoryobj
@@ -2180,7 +2172,6 @@ root.bind('<Button-1>', click)
 root.bind('<Button-3>', rclick)
 root.bind('<Motion>', move) #Regular moving the mouse around
 root.bind('a', a_press)
-root.bind('c', c_press)
 root.bind('x', x_press)
 # root.bind('<B1-Motion>', move) #Clicking and Dragging
 
