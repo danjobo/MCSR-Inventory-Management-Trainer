@@ -1,3 +1,6 @@
+from loot_table_generator import *
+from loot_table_variables import *
+
 speedrunItemsFileDirectory = 'assets/text-files/speedrun_items.txt'
 
 
@@ -20,7 +23,7 @@ class Grid:
         if 0<=x<=self.getColumns() and 0<=y<=self.getRows():
             self.__items[x][y] = value
         else:
-            raise IndexError(f'''
+            raise IndexError(f'''    
             
 Index(es) out of range for {self}:
 Max values accepted are x = {self.getColumns()}, y = {self.getRows()}
@@ -200,37 +203,101 @@ class Item:
     def getAttr(self):
         return (self.__id,self.__count)
 
+class OverworldGenerator:
+    'A class that generates an inventory object for an Overworld Section'
+
+    def __init__(
+            self      
+    ):
+        ''
+        self.items = {}
+
+class Mapless(OverworldGenerator):
+    ''
+
+    def __init__(self):
+        ''
+        OverworldGenerator.__init__()
+        self.items.update(buriedTreasure.generate())
+        self.items.update({})
+
+class Shipwreck(OverworldGenerator):
+    def __init__(self):
+        ''
+        OverworldGenerator.__init__()
+        pass
+
+class Village(OverworldGenerator):
+    ''
+
+    def __init__(self):
+        ''
+        OverworldGenerator.__init__()
+        pass
+      
+class Blacksmith(Village):
+    ''
+
+    def __init__(self):
+        ''
+        Village.__init__()
+        pass
+
+class NoBlacksmith(Village):
+    ''
+
+    def __init__(self):
+        ''
+        Village.__init__()
+        pass
+
+class Classic(OverworldGenerator):
+    ''
+
+    def __init__(self):
+        ''
+        OverworldGenerator.__init__()
+        pass
+    
+class RuinedPortal(OverworldGenerator):
+    ''
+
+    def __init__(self):
+        ''
+        OverworldGenerator.__init__()
+        pass
 
 
 
 
-armorInventory = Inventory(4,1,'armor')
-armorInventory.addItem('golden_helmet',1,0,0)
-armorInventory.addItem('iron_chestplate',1,0,1)
-armorInventory.addItem('iron_leggings',1,0,2)
-armorInventory.addItem('iron_boots',1,0,3)
-armorInventory.printItems()
+if __name__ == "__main__":
+    armorInventory = Inventory(4,1,'armor')
+    armorInventory.addItem('golden_helmet',1,0,0)
+    armorInventory.addItem('iron_chestplate',1,0,1)
+    armorInventory.addItem('iron_leggings',1,0,2)
+    armorInventory.addItem('iron_boots',1,0,3)
+    armorInventory.printItems()
 
-print('\n'+'_'*20)
+    print('\n'+'_'*20)
 
-mainInventory = Inventory(3,9,'main')
-mainInventory.addItem('bread',64,3,2)
-mainInventory.quickAddItem('oak_door',3)
-mainInventory.quickAddItem('oak_boat',1)
-mainInventory.printItems()
+    mainInventory = Inventory(3,9,'main')
+    mainInventory.addItem('bread',64,3,2)
+    mainInventory.quickAddItem('oak_door',3)
+    mainInventory.quickAddItem('oak_boat',1)
+    mainInventory.printItems()
 
-print('\n'+'_'*20)
+    print('\n'+'_'*20)
 
-hotbarInventory = Inventory(1,9,'hotbar')
-hotbarInventory.addItem('bread',17,3,0)
-hotbarInventory.addItem('stone_axe',1,0,0)
-hotbarInventory.addItem('iron_pickaxe',1,1,0)
-# hotbarInventory.addItem('stone_shovel',1,1,0)   ValueError: Item stone_pickeaxe:1 exists at position 1,0
-hotbarInventory.addItem('diamond_shovel',1,2,0)
-hotbarInventory.addItem('oak_boat',1,4,0)
-hotbarInventory.addItem('water_bucket',1,5,0)
-hotbarInventory.addItem('flint_and_steel',1,6,0)
-hotbarInventory.addItem('lava_bucket',1,7,0)
-hotbarInventory.addItem('iron_ingot',2,8,0)
-hotbarInventory.quickAddItem('apple',2)
-hotbarInventory.printItems()
+    hotbarInventory = Inventory(1,9,'hotbar')
+    hotbarInventory.addItem('bread',17,3,0)
+    hotbarInventory.addItem('stone_axe',1,0,0)
+    hotbarInventory.addItem('iron_pickaxe',1,1,0)
+    # hotbarInventory.addItem('stone_shovel',1,1,0)   ValueError: Item stone_pickeaxe:1 exists at position 1,0
+    hotbarInventory.addItem('diamond_shovel',1,2,0)
+    hotbarInventory.addItem('oak_boat',1,4,0)
+    hotbarInventory.addItem('water_bucket',1,5,0)
+    hotbarInventory.addItem('flint_and_steel',1,6,0)
+    hotbarInventory.addItem('lava_bucket',1,7,0)
+    hotbarInventory.addItem('iron_ingot',2,8,0)
+    hotbarInventory.quickAddItem('apple',2)
+    hotbarInventory.printItems()
