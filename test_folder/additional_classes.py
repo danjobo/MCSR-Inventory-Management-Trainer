@@ -43,7 +43,7 @@ class Item(pg.sprite.Sprite):
         self.image = pg.transform.scale(self.image,(64,64))
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos_x,pos_y)
-        self.mouseDown = False
+        self.clicked = False
 
     def centerOn(self,pos_x,pos_y):
         'Sets an items position centered on a given x and y coordinate'

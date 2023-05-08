@@ -3,6 +3,8 @@ import sys,pygame as pg
 from additional_classes import *
 from pygame.locals import *
 
+
+
 # General Setup
 pg.init()
 clock = pg.time.Clock()
@@ -22,6 +24,7 @@ pg.display.set_icon(pg.image.load('./assets/misc/end_crystal_icon_Tde_icon.ico')
 # Event Variables
 mousePos = (0,0) 
 mouseDown = False
+mouseMode = 'hover'
 
 
 # Sprites
@@ -67,6 +70,12 @@ while True:
             mousePos=pg.mouse.get_pos()  # a tuple
             # btn=pg.mouse      # mouse module??
             mouseDown = True
+            if apple.rect.collidepoint(*mousePos) and not apple.clicked and mouseMode == 'hover':
+                apple.clicked = True
+                mouseMode = 'drag'
+            elif mouseMode == 'drag' and apple.clicked:
+                apple.clicked = False
+                mouseMode = 'hover'
         if event.type == MOUSEBUTTONUP:
             mousePos=pg.mouse.get_pos()  # a tuple
             # btn=pg.mouse
@@ -76,14 +85,6 @@ while True:
             mousePos=event.pos # a tuple
         # Key Press
         if event.type == KEYDOWN:
-            # if event.key == K_RIGHT:
-            #     invX += 5
-            # if event.key == K_LEFT:
-            #     invX -= 5
-            # if event.key == K_UP:
-            #     invY -= 5
-            # if event.key == K_DOWN:
-            #     invY += 5
             keyDown = pg.key.name(event.key)
         if event.type == KEYUP:
             keyUp = pg.key.name(event.key)
@@ -91,10 +92,15 @@ while True:
 
 
     # Collision Detection
-    if apple.rect.collidepoint(mousePos[0],mousePos[1]) and mouseDown:
-        apple.mouseDown = True
+    # if apple.rect.collidepoint(*mousePos) and clicked and mouseMode == 'hover' and not apple.clicked:
+    #     apple.clicked = True
+    #     mouseMode = 'drag'
+    # elif clicked and mouseMode == 'drag' and apple.clicked:
+    #     apple.clicked = False
+    #     mouseMode = 'hover'
     
-    if apple.mouseDown == True:
+
+    if apple.clicked and mouseMode == 'drag':
         apple.centerOn(mousePos[0],mousePos[1])
 
 
@@ -102,3 +108,6 @@ while True:
     screen.blit(background,screenRect)
     UI_ELEMENTS_GROUP.draw(screen)
     ITEMS_GROUP.draw(screen)
+
+
+    # Info Print
