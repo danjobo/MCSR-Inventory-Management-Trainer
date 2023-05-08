@@ -67,6 +67,8 @@ given x and y coordinate'''
         self.image = pg.transform.scale(self.image,(width,height),dest_surface)
         self.rect = self.image.get_rect()
 
+    def __str__(self):
+        return f"<additional_classes.Item Object at {hex(id(self))}>"
 
 if __name__ == "__main__":
     pass

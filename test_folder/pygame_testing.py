@@ -1,6 +1,7 @@
 # EVENTS: https://www.tutorialspoint.com/pygame/pygame_event_objects.htm
 import sys,pygame as pg
 from additional_classes import *
+from functions import *
 from pygame.locals import *
 
 
@@ -22,9 +23,11 @@ pg.display.set_icon(pg.image.load('./assets/misc/end_crystal_icon_Tde_icon.ico')
 
 
 # Event Variables
+null = None
 mousePos = (0,0) 
 mouseDown = False
 mouseMode = 'hover'
+clicked = null
 
 
 # Sprites
@@ -32,19 +35,21 @@ background = pg.image.load('./assets/misc/background1.jpg')
 
 
 ITEMS_GROUP = pg.sprite.Group()
-
 apple = Item('./assets/items/apple.png',287,27)
-ITEMS_GROUP.add(apple)
+iron_ingot = Item('./assets/items/iron_ingot.png',350,27)
+ITEMS_GROUP.add(apple,iron_ingot)
+
 
 UI_ELEMENTS_GROUP = pg.sprite.Group()
-
 inventory = UIElement('./assets/misc/inventory-snip.png',287,27)
 UI_ELEMENTS_GROUP.add(inventory)
 
 
 
-
-
+# Additional Variables
+item_movement_dict = {}
+for sprite in ITEMS_GROUP.spritedict:
+    item_movement_dict.update({str(sprite):sprite.centerOn})
 
 
 
@@ -67,15 +72,26 @@ while True:
             sys.exit(1)
         # Mouse hold/click
         if event.type == MOUSEBUTTONDOWN:
-            mousePos=pg.mouse.get_pos()  # a tuple
-            # btn=pg.mouse      # mouse module??
-            mouseDown = True
-            if apple.rect.collidepoint(*mousePos) and not apple.clicked and mouseMode == 'hover':
-                apple.clicked = True
-                mouseMode = 'drag'
-            elif mouseMode == 'drag' and apple.clicked:
-                apple.clicked = False
-                mouseMode = 'hover'
+            if event.button == 1:
+                mousePos=pg.mouse.get_pos()  # a tuple
+                # btn=pg.mouse      # mouse module??
+                mouseDown = True
+                if apple.rect.collidepoint(*mousePos) and not apple.clicked and mouseMode == 'hover':
+                    apple.clicked = True
+                    clicked = apple
+                    mouseMode = 'drag'
+                elif mouseMode == 'drag' and apple.clicked:
+                    apple.clicked = False
+                    clicked = null
+                    mouseMode = 'hover'
+                if iron_ingot.rect.collidepoint(*mousePos) and not iron_ingot.clicked and mouseMode == 'hover':
+                    iron_ingot.clicked = True
+                    clicked = iron_ingot
+                    mouseMode = 'drag'
+                elif mouseMode == 'drag' and iron_ingot.clicked:
+                    iron_ingot.clicked = False
+                    clicked = None
+                    mouseMode = 'hover'
         if event.type == MOUSEBUTTONUP:
             mousePos=pg.mouse.get_pos()  # a tuple
             # btn=pg.mouse
@@ -92,16 +108,18 @@ while True:
 
 
     # Collision Detection
-    # if apple.rect.collidepoint(*mousePos) and clicked and mouseMode == 'hover' and not apple.clicked:
-    #     apple.clicked = True
-    #     mouseMode = 'drag'
-    # elif clicked and mouseMode == 'drag' and apple.clicked:
-    #     apple.clicked = False
-    #     mouseMode = 'hover'
-    
 
-    if apple.clicked and mouseMode == 'drag':
-        apple.centerOn(mousePos[0],mousePos[1])
+
+    
+    # Computation
+    
+    # Makeshift Switch Statement for Item Movement w/ Mouse
+    if clicked == None:
+        pass
+    else:
+        item_movement_dict[str(clicked)](*mousePos)
+
+    
 
 
     # RENDER GAME HERE
