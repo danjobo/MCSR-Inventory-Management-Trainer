@@ -23,11 +23,10 @@ pg.display.set_icon(pg.image.load('./assets/misc/end_crystal_icon_Tde_icon.ico')
 
 
 # Event Variables
-null = None
 mousePos = (0,0) 
 mouseDown = False
 mouseMode = 'hover'
-clicked = null
+clicked = None
 
 
 # Sprites
@@ -40,6 +39,9 @@ iron_ingot = Item('./assets/items/iron_ingot.png',350,27)
 ITEMS_GROUP.add(apple,iron_ingot)
 
 
+CLICKED_ITEMS_GROUP = pg.sprite.Group()
+
+
 UI_ELEMENTS_GROUP = pg.sprite.Group()
 inventory = UIElement('./assets/misc/inventory-snip.png',287,27)
 UI_ELEMENTS_GROUP.add(inventory)
@@ -47,9 +49,9 @@ UI_ELEMENTS_GROUP.add(inventory)
 
 
 # Additional Variables
-item_movement_dict = {}
+item_drag_switch_case_dict = {}
 for sprite in ITEMS_GROUP.spritedict:
-    item_movement_dict.update({str(sprite):sprite.centerOn})
+    item_drag_switch_case_dict.update({str(sprite):sprite.centerOn})
 
 
 
@@ -66,44 +68,49 @@ while True:
 
     # Event Loop
     for event in pg.event.get():
-        # Close window button
-        if event.type == QUIT:
-            pg.quit()
-            sys.exit(1)
-        # Mouse hold/click
-        if event.type == MOUSEBUTTONDOWN:
-            if event.button == 1:
+        match event.type:
+            case 256: # QUIT
+                pg.quit()
+                sys.exit(1)
+            case 1025: # MOUSEBUTTONDOWN
+                if event.button == 1:
+                    mousePos=pg.mouse.get_pos()  # a tuple
+                    # btn=pg.mouse      # mouse module??
+                    mouseDown = True
+                    # Item Collision Detection
+                    for item in ITEMS_GROUP.spritedict:
+                        if item.rect.collidepoint(*mousePos) and not item.clicked and mouseMode == 'hover':
+                            item.clicked = True
+                            clicked = item
+                            mouseMode = 'drag'
+                            CLICKED_ITEMS_GROUP.add(item)
+                        elif mouseMode == 'drag' and item.clicked:
+                            item.clicked = False
+                            clicked = None
+                            mouseMode = 'hover'
+                            CLICKED_ITEMS_GROUP.remove(item)
+                            # for item2 in ITEMS_GROUP.spritedict:
+                            #     if item2.rect.collidepoint(*mousePos) and not item2.clicked and mouseMode == 'hover':
+                            #         item2.clicked = True
+                            #         clicked = item2
+                            #         mouseMode = 'drag'
+                            #     elif mouseMode == 'drag' and item2.clicked:
+                            #         item2.clicked = False
+                            #         clicked = None
+                            #         mouseMode = 'hover'
+                    
+            case 1026: # MOUSEBUTTONUP
                 mousePos=pg.mouse.get_pos()  # a tuple
-                # btn=pg.mouse      # mouse module??
-                mouseDown = True
-                if apple.rect.collidepoint(*mousePos) and not apple.clicked and mouseMode == 'hover':
-                    apple.clicked = True
-                    clicked = apple
-                    mouseMode = 'drag'
-                elif mouseMode == 'drag' and apple.clicked:
-                    apple.clicked = False
-                    clicked = null
-                    mouseMode = 'hover'
-                if iron_ingot.rect.collidepoint(*mousePos) and not iron_ingot.clicked and mouseMode == 'hover':
-                    iron_ingot.clicked = True
-                    clicked = iron_ingot
-                    mouseMode = 'drag'
-                elif mouseMode == 'drag' and iron_ingot.clicked:
-                    iron_ingot.clicked = False
-                    clicked = None
-                    mouseMode = 'hover'
-        if event.type == MOUSEBUTTONUP:
-            mousePos=pg.mouse.get_pos()  # a tuple
-            # btn=pg.mouse
-            mouseDown = False
-        # Mouse movement
-        if event.type == MOUSEMOTION:
-            mousePos=event.pos # a tuple
-        # Key Press
-        if event.type == KEYDOWN:
-            keyDown = pg.key.name(event.key)
-        if event.type == KEYUP:
-            keyUp = pg.key.name(event.key)
+                # btn=pg.mouse
+                mouseDown = False
+            case 1024: # MOUSEMOTION
+                mousePos=event.pos # a tuple
+            case 768: # KEYDOWN
+                keyDown = pg.key.name(event.key)
+            case 769: # KEYUP
+                keyUp = pg.key.name(event.key)
+            case _:
+                pass
 
 
 
@@ -111,13 +118,16 @@ while True:
 
 
     
-    # Computation
+    # COMPUTATION
     
     # Makeshift Switch Statement for Item Movement w/ Mouse
-    if clicked == None:
-        pass
-    else:
-        item_movement_dict[str(clicked)](*mousePos)
+    # if clicked == None:
+    #     pass
+    # else:
+    #     item_drag_switch_case_dict[str(clicked)](*mousePos)
+
+    if isinstance(clicked,Item):
+        item_drag_switch_case_dict[str(clicked)](*mousePos)
 
     
 
@@ -126,6 +136,7 @@ while True:
     screen.blit(background,screenRect)
     UI_ELEMENTS_GROUP.draw(screen)
     ITEMS_GROUP.draw(screen)
+    CLICKED_ITEMS_GROUP.draw(screen)
 
 
-    # Info Print
+    # Debug Info Print
